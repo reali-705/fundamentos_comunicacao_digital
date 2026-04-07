@@ -1,29 +1,25 @@
 \subsection*{Questão 03}
 
-\textit{Modelo de gráfico de um sinal senoidal com frequência de 1 kHz.}
+\textit{Compare um sinal digital com um sinal analógico.}
 
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    width=12cm, height=6cm,     % Dimensões do gráfico
-    axis lines = middle,        % Eixos cruzados no centro
-    xlabel = {$t$ (s)},         % Rótulo do eixo X
-    ylabel = {$s(t)$},          % Rótulo do eixo Y
-    label style={font=\small},
-    tick label style={font=\tiny},
-    grid = both,                % Grade para facilitar a leitura de valores
-    minor tick num = 1,
-    domain = 0:0.002,           % Domínio (ex: 2ms para ver 2 ciclos de 1kHz)
-    samples = 200,              % Suavidade da curva
-    xmin=0, xmax=0.0022,
-    ymin=-1.5, ymax=1.5,
-    legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1}
-]
-    % Curva da Senoide: A * sin(2 * pi * f * x + fase)
-    % Exemplo: Amplitude=1, Frequência=1000Hz (1kHz)
-    \addplot [blue, thick] {1 * sin(deg(2 * pi * 1000 * x + 0))};
-    \addlegendentry{Sinal Senoidal ($1\khz$)}
+\textbf{Resposta:}
+\begin{itemize}
+    \item \textbf{Sinal Analógico:} Varia continuamente no tempo e pode assumir qualquer valor dentro de um intervalo.
+    É sensível a ruídos, pois qualquer pequena variação altera a informação.
+    \item \textbf{Sinal Digital:} Varia em passos discretos e assume valores específicos.
+    É mais robusto contra ruídos devido à regeneração de sinal e permite compressão/criptografia eficiente.    
+    \item \textbf{Representação:}
 
-\end{axis}
-\end{tikzpicture}
-\end{center}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw 
+                [very thick, blue]
+                (0, 0) sin (1, 1) cos (2, 0) sin (3, -1) cos (4, 0);
+            \node[blue] at (1, 1.3) {Sinal Analógico};
+            \draw
+                [very thick, red, dashed]
+                (5, 0) -- (5, 1) -- (6, 1) -- (6, 0) -- (7, 0) -- (7, 1) -- (8, 1) -- (8, 0);
+            \node[red] at (6.5, 1.3) {Sinal Digital (Binário)};
+        \end{tikzpicture}
+    \end{center}
+\end{itemize}

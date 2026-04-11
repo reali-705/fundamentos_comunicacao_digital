@@ -30,13 +30,13 @@ async def texto_para_som(request: TextoParaMorseRequest) -> TextoParaMorseRespon
 
     return TextoParaMorseResponse(
         # TODO: Substituir o código Morse de teste pelo resultado real da conversão do texto recebido
-        codigo_morse=texto_recebido,
+        codigo_morse=texto_recebido + " (codigo Morse de teste)",
         # TODO: Substituir o ID de teste por um ID real gerado pelo banco de dados
         id=0,
         # TODO: Gerar o arquivo de áudio e adicioná-lo ao caminho correto para o frontend acessar
         caminho_audio=str(RECORDINGS_DIR / "output.wav"),
         # TODO: Substituir a duração total de teste pelo valor real calculado durante a geração do áudio
-        duracao_total=0.0,
+        duracao_total=0.1,
     )
 
 

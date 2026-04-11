@@ -34,8 +34,8 @@ class DBManager:
 
     def salvar(self, entrada: str, tipo_com: str, status: int, saida: str, tipo_saida: str, path: str):
         '''Salva um log no banco de dados.'''
-        sql = """
-        INSERT INTO tb_logs 
+        sql = f"""
+        INSERT INTO {self.db_nome}
         (entrada_comunicacao, tpcomunicacao, status_mensagem, saida_comunicacao, tpsaida, logging_path)
         VALUES (?, ?, ?, ?, ?, ?)
         """

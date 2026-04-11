@@ -1,8 +1,8 @@
 '''Este arquivo é responsável por configurar as variáveis de ambiente e outras configurações do projeto. '''
 from pathlib import Path
 
-ATIVIDADE02_DIR = Path(__file__).resolve().parent.parent.parent
-RECORDINGS_DIR = ATIVIDADE02_DIR / "data" / "recordings"
+APP_DIR = Path(__file__).resolve().parent.parent
+RECORDINGS_DIR = APP_DIR / "recordings"
 
 MORSE_MAP = {
     "A": ".-",    "B": "-...",  "C": "-.-.",  "D": "-..",

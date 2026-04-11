@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 
 from app.core.config import FREQUENCIA_PONTO, FREQUENCIA_TRACO, RECORDINGS_DIR
 from pydantic import BaseModel, Field, field_validator
@@ -28,16 +27,6 @@ class BaseResponse(BaseModel):
         default=...,
         examples=["... --- ...", "- . ... - .- -. -.. ---"],
         description="Código Morse extraído do arquivo de áudio",
-    )
-    id: int = Field(
-        default=...,
-        examples=[1, 2],
-        description="Identificador único para a conversão realizada, útil para rastreamento no banco de dados ou para referência futura",
-    )
-    tempo_referencia: datetime = Field(
-        default_factory=datetime.now,
-        examples=["2026-04-10T19:30:00Z", "2026-04-14T15:30:00Z"],
-        description="Timestamp da conversão realizada, útil para rastreamento no banco de dados ou para referência futura",
     )
 
 

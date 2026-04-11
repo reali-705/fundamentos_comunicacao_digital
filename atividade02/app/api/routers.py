@@ -4,6 +4,7 @@ from app.api.schemas import (
     TextoParaMorseRequest,
     TextoParaMorseResponse,
 )
+from app.core.config import SAMPLE_RATE
 from app.core.emissor import morse_para_audio, salvar_audio
 from app.core.tradutor import texto_para_morse
 from fastapi import APIRouter, status
@@ -37,13 +38,12 @@ async def texto_para_som(request: TextoParaMorseRequest) -> TextoParaMorseRespon
 
     caminho_audio = salvar_audio(audio, filename="output.wav")
 
+    duracao_total = len(audio) / SAMPLE_RATE
+
     return TextoParaMorseResponse(
         codigo_morse=codigo_morse_gerado,
-        id=0,
-        # TODO: Gerar o arquivo de áudio e adicioná-lo ao caminho correto para o frontend acessar
         caminho_audio=caminho_audio,
-        # TODO: Substituir a duração total de teste pelo valor real calculado durante a geração do áudio
-        duracao_total=0.1,
+        duracao_total=duracao_total,
     )
 
 
@@ -63,6 +63,5 @@ async def som_para_texto(request: SomParaTextoRequest) -> SomParaTextoResponse:
 
     return SomParaTextoResponse(
         codigo_morse="",
-        id=0,
         texto_convertido="",
     )

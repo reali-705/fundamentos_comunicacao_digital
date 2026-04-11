@@ -7,7 +7,7 @@ Gerencia a conexão com o banco de dados SQLite e a execução de comandos SQL.
 
 class DBManager:
     '''Inicializa o gerenciador de banco de dados, criando o banco e a tabela se necessário.'''
-    def __init__(self, DB_NOME='tb_logs.db', SCHEMA_NOME='schema.sql'):
+    def __init__(self, DB_NOME: str = "tb_logs.db", SCHEMA_NOME: str = "schema.sql"):
 
         self.diretorio_base = os.path.dirname(os.path.abspath(__file__))
         

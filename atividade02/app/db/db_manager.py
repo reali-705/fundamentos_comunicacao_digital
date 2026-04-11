@@ -51,7 +51,7 @@ class DBManager:
     def consultar_logs(self):
         '''Consulta todos os logs armazenados no banco de dados.'''
         
-        sql = "SELECT * FROM tb_logs"
+        sql = f"SELECT * FROM {self.db_nome}"
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.execute(sql)

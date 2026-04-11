@@ -12,7 +12,7 @@ class DBManager:
         self.diretorio_base = os.path.dirname(os.path.abspath(__file__))
         
         self.pasta_db = self.diretorio_base 
-        
+        self.db_nome = DB_NOME
         self.db_path = os.path.join(self.pasta_db, DB_NOME)
         self.schema_path = os.path.join(self.pasta_db, SCHEMA_NOME)
         self.connection = None

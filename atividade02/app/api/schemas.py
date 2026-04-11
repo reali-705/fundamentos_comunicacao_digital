@@ -1,18 +1,25 @@
 import re
 from datetime import datetime
 
-from app.utils.utils import RECORDINGS_DIR
+from app.core.config import FREQUENCIA_PONTO, FREQUENCIA_TRACO, RECORDINGS_DIR
 from pydantic import BaseModel, Field, field_validator
 
 
 # --- Modelo Base para Requisições e Respostas ---
 class BaseRequest(BaseModel):
-    frequencia: int = Field(
-        default=800,
+    frequencia_ponto: int = Field(
+        default=FREQUENCIA_PONTO,
         ge=400,
         le=2000,
-        examples=[800, 1000, 1500],
-        description="Frequência em Hz para a conversão do texto em código Morse (entre 400 e 2000 Hz)",
+        examples=[FREQUENCIA_PONTO],
+        description="Frequência do ponto em Hz para a conversão do texto em código Morse (entre 400 e 2000 Hz)",
+    )
+    frequencia_traco: int = Field(
+        default=FREQUENCIA_TRACO,
+        ge=400,
+        le=2000,
+        examples=[FREQUENCIA_TRACO],
+        description="Frequência do traco em Hz para a conversão do texto em código Morse (entre 400 e 2000 Hz)",
     )
 
 

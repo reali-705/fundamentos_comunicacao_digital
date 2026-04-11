@@ -32,7 +32,7 @@ class DBManager:
         except sqlite3.Error as e:
             print(f"[ERRO] Falha ao inicializar o banco: {e}")
 
-    def salvar(self, entrada, tipo_com, status, saida, tipo_saida, path):
+    def salvar(self, entrada: str, tipo_com: str, status: str, saida: str, tipo_saida: str, path: str):
         '''Salva um log no banco de dados.'''
         sql = """
         INSERT INTO tb_logs 

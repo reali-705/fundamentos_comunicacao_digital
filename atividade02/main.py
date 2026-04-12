@@ -1,5 +1,6 @@
 import flet as ft
 from app.ui.main_ui import build
+from app.ui.components.api_cliente import converter_texto_para_morse
 def main(page: ft.Page):
     page.title = "SIMULADOR DE CÓDIGO MORSE"
     page.theme_mode = ft.ThemeMode.LIGHT

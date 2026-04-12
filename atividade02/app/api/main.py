@@ -5,6 +5,6 @@ app = FastAPI()
 
 app.include_router(
     router=router,
-    prefix="/api/tradutor",
+    prefix="/api",
     tags=["Tradutor Morse"],
 )

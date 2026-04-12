@@ -1,19 +1,20 @@
 from app.api.schemas import (
-    SomParaTextoRequest,
     SomParaTextoResponse,
     TextoParaMorseRequest,
     TextoParaMorseResponse,
 )
 from app.core.config import SAMPLE_RATE
 from app.core.emissor import morse_para_audio, salvar_audio
+from app.core.recorder import RecorderManager
 from app.core.tradutor import texto_para_morse
-from fastapi import APIRouter, status
+from fastapi import APIRouter, HTTPException, status
 
 router = APIRouter()
+recorder = RecorderManager()
 
 
 @router.post(
-    path="/texto-para-som",
+    path="/tradutor/texto-para-som",
     status_code=status.HTTP_201_CREATED,
     response_model=TextoParaMorseResponse,
     summary="Converter texto alfanumérico em código Morse e gerar áudio",
@@ -47,19 +48,34 @@ async def texto_para_som(request: TextoParaMorseRequest) -> TextoParaMorseRespon
     )
 
 
-@router.post(
-    path="/som-para-texto",
-    status_code=status.HTTP_201_CREATED,
-    response_model=SomParaTextoResponse,
-    summary="Converter áudio contendo código Morse em texto alfanumérico",
-)
-async def som_para_texto(request: SomParaTextoRequest) -> SomParaTextoResponse:
+@router.post(path="/iniciar-gravacao", status_code=status.HTTP_202_ACCEPTED)
+async def iniciar_gravacao() -> dict[str, str]:
     """
-    Endpoint para converter um arquivo de áudio contendo código Morse em texto alfanumérico.
-    O usuário deve fornecer o caminho para o arquivo de áudio a ser convertido e a frequência utilizada na gravação.
+    Endpoint para iniciar a gravação de áudio do microfone.
+    O áudio será salvo em um arquivo WAV no diretório de gravações.
     """
+    sucesso = recorder.start()
+    if not sucesso:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A gravação já está em andamento.",
+        )
+    return {"message": "Gravação iniciada com sucesso."}
 
-    # TODO: Lógica de conversão do áudio para texto alfanumérico
+
+@router.post(
+    path="/parar-gravacao",
+    status_code=status.HTTP_200_OK,
+    response_model=SomParaTextoResponse,
+)
+async def parar_gravacao() -> SomParaTextoResponse:
+    """
+    Endpoint para parar a gravação de áudio do microfone.
+    O áudio gravado será processado para extrair o código Morse e convertê-lo em texto alfanumérico.
+    """
+    recorder.stop()
+
+    # TODO: Lógica de tratamento do áudio
 
     return SomParaTextoResponse(
         codigo_morse="",

@@ -5,26 +5,6 @@ from scipy.io import wavfile
 import sounddevice as sd
 
 
-def salvar_audio(
-    audio: NDArray[np.floating], filename: str, sample_rate: int = SAMPLE_RATE
-) -> str:
-    """Salva o array de áudio em um arquivo WAV."""
-
-    caminho_completo = RECORDINGS_DIR / "output" / filename
-    caminho_completo.parent.mkdir(parents=True, exist_ok=True)
-
-    audio32: NDArray[np.float32] = np.asarray(audio, dtype=np.float32)
-
-    try:
-        wavfile.write(caminho_completo, sample_rate, audio32)
-        print(f"Sucesso! Áudio salvo como: {filename}")
-    except Exception as e:
-        print(f"Erro ao salvar áudio: {e}")
-        raise
-
-    return str(caminho_completo)
-
-
 class GravadorAudio:
     """Classe responsável por gravar áudio e salvar como WAV."""
 

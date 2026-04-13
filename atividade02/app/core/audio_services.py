@@ -1,5 +1,5 @@
 import numpy as np
-from app.core.config import RECORDINGS_DIR, SAMPLE_RATE,
+from config import RECORDINGS_DIR, SAMPLE_RATE
 from numpy.typing import NDArray
 from scipy.io import wavfile
 import sounddevice as sd
@@ -10,75 +10,111 @@ def salvar_audio(
 ) -> str:
     """Salva o array de áudio em um arquivo WAV."""
 
-    # Constrói o caminho completo para o arquivo de saída, garantindo que a pasta exista
     caminho_completo = RECORDINGS_DIR / "output" / filename
     caminho_completo.parent.mkdir(parents=True, exist_ok=True)
 
     audio32: NDArray[np.float32] = np.asarray(audio, dtype=np.float32)
 
-    # O astype(np.float32) é essencial para o arquivo WAV entender a amplitude de 0.5
     try:
         wavfile.write(caminho_completo, sample_rate, audio32)
         print(f"Sucesso! Áudio salvo como: {filename}")
     except Exception as e:
         print(f"Erro ao salvar áudio: {e}")
+        raise
 
     return str(caminho_completo)
-class GravadorAudio:
-    """Classe responsável por converter Morse em áudio e salvar como arquivo WAV."""
 
-    def __init__(self, gravando: bool = False, sample_rate: int = SAMPLE_RATE) -> NDArray[np.floating]:
+
+class GravadorAudio:
+    """Classe responsável por gravar áudio e salvar como WAV."""
+
+    def __init__(self, gravando: bool = False, sample_rate: int = SAMPLE_RATE) -> None:
         self.gravando = gravando
         self.sample_rate = sample_rate
-        self.frames = []  # Lista para armazenar os frames de áudio durante a gravação
-        self.stream = None  # Placeholder para o stream de áudio
+        self.frames = []
+        self.stream = None
+        self.device_id = None 
 
+
+    def escolher_dispositivo_interativamente(self):
+        print("\n--- DISPOSITIVOS DE ENTRADA ---")
+
+        devices = sd.query_devices()
+
+        for i, d in enumerate(devices):
+            if d["max_input_channels"] > 0:
+                print(f"[{i}] {d['name']}")
+
+        print("--------------------------------")
+
+        escolha = input("Digite o ID do microfone (ou ENTER para padrão): ").strip()
+
+        if escolha == "":
+            self.device_id = None
+            print("Usando dispositivo padrão")
+        else:
+            self.device_id = int(escolha)
+            print(f"Usando dispositivo {self.device_id}")
+
+    # =========================
+    # CALLBACK
+    # =========================
     def _callback_audio(
-        self, 
-        indata: np.ndarray, 
-        frames: int, 
-        time: dict, 
+        self,
+        indata: np.ndarray,
+        frames: int,
+        time: dict,
         status: sd.CallbackFlags
     ) -> None:
-        """
-        Callback otimizado. 
-        indata: Array NumPy (amostras, canais).
-        time: Dicionário com timestamps (AdcInputTime, CurrentTime, etc).
-        """
         if status:
-            print(f"Status do Stream: {status}", flush=True)
+            print(f"⚠️ Status do Stream: {status}", flush=True)
 
         if self.gravando:
-            # .copy() pois o buffer 'indata' é volátil
             self.frames.append(indata.copy())
-    def iniciar_gravacao(self) -> None:
-        '''chame esta funcao para iniciar a gravacao do audio'''
-        self.gravando = True
-        self.frames = []  # Limpa frames anteriores
 
-        # incia o microfone e o callback de audio
+ 
+    def iniciar_gravacao(self) -> dict:
+        self.gravando = True
+        self.frames = []
+
         self.stream = sd.InputStream(
-            samplerate=self.sample_rate, 
-            channels=1, 
-            dtype='float32', 
+            device=self.device_id, 
+            samplerate=self.sample_rate,
+            channels=1,
+            dtype='float32',
             callback=self._callback_audio
         )
+
         self.stream.start()
-        return {"status": "gravando", "message": "Gravação iniciada com sucesso!"}
+
+        return {
+            "status": "gravando",
+            "message": f"Gravação iniciada (device={self.device_id})"
+        }
+
     def parar_gravacao(self):
-        """Chame esta função quando o front-end enviar o sinal de FIM."""
         self.gravando = False
         if self.stream:
             self.stream.stop()
             self.stream.close()
-        
-        # Junta tudo em um único array
         if self.frames:
-            # axis=0 para concatenar horizontalmente (amostras) pois cada frame tem duas dimensões (amostras, canais) 
             array_final = np.concatenate(self.frames, axis=0)
-            return array_final
+            return array_final.flatten()
         else:
             return np.array([])
-    
 
-            
+    #redundante? sim , mas preguiça (23:57 já)
+    def salvar_audio(self, audio, filename):
+        return salvar_audio(audio, filename, self.sample_rate)
+
+    def carregar_de_arquivo(self, filename: str) -> NDArray[np.float32]:
+        caminho = RECORDINGS_DIR / "output" / filename
+        sr, data = wavfile.read(caminho)
+
+        if data.dtype != np.float32:
+            data = data.astype(np.float32) / (np.iinfo(data.dtype).max + 1)
+
+        if len(data.shape) > 1:
+            data = data[:, 0]
+
+        return data

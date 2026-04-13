@@ -63,3 +63,11 @@ AMPLITUDE = 0.5
 # Taxa de Amostragem (Sample Rate). Quantos "pontos" o computador desenha por segundo.
 # 44100 Hz é o padrão comercial de CDs, garantindo alta fidelidade sem arquivos gigantes.
 SAMPLE_RATE = 44100
+
+
+
+# ==========================================
+# 4. DETECÃO DE ÁUDIO (Configurações para o Receptor)
+# ==========================================
+
+FRAME_MS = int(DURACAO_PONTO * 1000/10)  # Duração de cada frame em milissegundos

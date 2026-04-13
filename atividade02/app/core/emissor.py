@@ -1,5 +1,5 @@
 import numpy as np
-from app.core.config import (
+from config import (
     AMPLITUDE,
     DURACAO_PONTO,
     DURACAO_TRACO,

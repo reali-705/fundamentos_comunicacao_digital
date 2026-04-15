@@ -72,23 +72,30 @@ def frequencia_dropdown():
 
 '''Função para criar a seção de telegrafista, que inclui um gráfico 
 de ondas de áudio e botões para baixar o áudio e copiar o Morse'''
-def criar_secao_telegrafista():
+import flet as ft
+
+def criar_secao_telegrafista(btn_gravacao, status_text):
     return ft.Column(
         controls=[
             ft.Text("Modo Telegrafista e Visualização de Áudio", size=30, weight="bold"),
-            ft.Container(content=ft.Text("Gráfico de Ondas de Áudio", weight="bold", color=ft.Colors.GREY_500),
-                         bgcolor="#f0f4f8",
-                         padding=20,
-                         border_radius=10,
-                         height=500,
-                         width=600
-
+            # Exibição do Status de Gravação acima do gráfico
+            status_text, 
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("Gráfico de Ondas de Áudio", weight="bold", color=ft.Colors.GREY_500),
+                    # O botão de gravação fica centralizado dentro do container ou logo abaixo
+                    btn_gravacao
+                ]),
+                bgcolor="#f0f4f8",
+                padding=20,
+                border_radius=10,
+                height=500,
+                width=600,
             ),
             ft.Row([
                 ft.Button("Baixar Áudio"),
-                ft.Button("Copiar Morse")
+                ft.Button("Copiar Morse"),
             ], spacing=10)
         ],
         spacing=15
-        
     )

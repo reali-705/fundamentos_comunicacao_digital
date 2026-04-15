@@ -1,15 +1,30 @@
 import flet as ft
 from app.ui.components.widgets import criar_card_saida, criar_campo_entrada,frequencia_dropdown, criar_secao_telegrafista
-from app.ui.components.botoes import setup_handlers
+from app.ui.components.botoes import setup_handlers, setup_telegrafista_handler
 import flet_audio as fa
+from flet_audio_recorder import AudioRecorder
+
 def build(page: ft.Page):
+    gravador = AudioRecorder()
+    #page.overlay.append(gravador)
+
+    status_text = ft.Text("Status: Pronto para gravar", size=16)
+    btn_gravacao = ft.Button(
+        "GRAVAR MENSAGEM",
+        bgcolor= "#adf358",
+        color="white"
+    )
+
+    on_rec_click = setup_telegrafista_handler(page, gravador, status_text)
+    btn_gravacao.on_click = on_rec_click
+
     texto_morse_saida = ft.Text("", size=25, weight=ft.FontWeight.BOLD)
     titulo = ft.Text("Conversor Texto-Morse", size=30, weight=ft.FontWeight.BOLD)
     campo_entrada = criar_campo_entrada()
     tipo_frequencia = frequencia_dropdown()
-    telegrapista = criar_secao_telegrafista()
-    audio_controle = fa.Audio(volume=1.0, autoplay= True)
-    page.overlay.append(audio_controle)
+    telegrapista = criar_secao_telegrafista(btn_gravacao, status_text)
+    audio_controle = fa.Audio(src='http://127.0.0.1:8000/audios/output.wav', volume=1.0, autoplay = True)
+    #page.overlay.append(audio_controle)
     page.update()
     on_convert = setup_handlers(page, campo_entrada, texto_morse_saida, tipo_frequencia, audio_controle)
     # Retorno da UI principal
@@ -18,7 +33,6 @@ def build(page: ft.Page):
             ft.Column(
                 expand=1,
                 controls=[
-                    audio_controle,
                     ft.Text("Conversor Texto-Morse", size=30, weight="bold"),
                     campo_entrada,
                     ft.Button('CONVERTER PARA MORSE', style=ft.ButtonStyle(

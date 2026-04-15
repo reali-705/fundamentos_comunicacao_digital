@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.135.3",
     "flet>=0.84.0",
+    "flet-audio>=0.84.0",
     "numpy>=2.4.4",
     "requests>=2.33.1",
     "scipy>=1.17.1",

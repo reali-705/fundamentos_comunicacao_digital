@@ -6,7 +6,7 @@ def criar_card_saida(texto_controle):
     return ft.Container(
         content=ft.Column([
             ft.Text("TRADUÇÃO"),
-            ft.Container(content=texto_controle, padding=10, width=500, height=300)
+            ft.Container(content=texto_controle, padding=10, width=500, height=200)
         ]),
         bgcolor="#f0f4f8",
         border_radius=10,
@@ -59,13 +59,15 @@ def frequencia_dropdown():
         label="Frequência (Hz)",
         value="800",
         options=[
+            ft.dropdown.Option("200"),
             ft.dropdown.Option("400"),
             ft.dropdown.Option("800"),
             ft.dropdown.Option("1000"),
             ft.dropdown.Option("1500"),
             ft.dropdown.Option("2000"),
         ],
-        width=150
+        width=150,
+        
     )
 
 '''Função para criar a seção de telegrafista, que inclui um gráfico 
@@ -83,8 +85,8 @@ def criar_secao_telegrafista():
 
             ),
             ft.Row([
-                ft.ElevatedButton("Baixar Áudio"),
-                ft.ElevatedButton("Copiar Morse")
+                ft.Button("Baixar Áudio"),
+                ft.Button("Copiar Morse")
             ], spacing=10)
         ],
         spacing=15

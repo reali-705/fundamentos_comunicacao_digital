@@ -2,7 +2,7 @@ from app.api.routers import router
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from atividade02.app.core.config import RECORDINGS_DIR
+from app.core.config import RECORDINGS_DIR
 
 app = FastAPI()
 

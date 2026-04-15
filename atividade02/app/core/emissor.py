@@ -77,22 +77,4 @@ def morse_para_audio(
     return np.concatenate(audio_final)
 
 
-def salvar_audio(
-    audio: NDArray[np.floating], filename: str, sample_rate: int = SAMPLE_RATE
-) -> str:
-    """Salva o array de áudio em um arquivo WAV."""
 
-    # Constrói o caminho completo para o arquivo de saída, garantindo que a pasta exista
-    caminho_completo = RECORDINGS_DIR / filename
-    caminho_completo.parent.mkdir(parents=True, exist_ok=True)
-
-    audio32: NDArray[np.float32] = np.asarray(audio, dtype=np.float32)
-
-    # O astype(np.float32) é essencial para o arquivo WAV entender a amplitude de 0.5
-    try:
-        wavfile.write(caminho_completo, sample_rate, audio32)  # type: ignore
-        print(f"Sucesso! Áudio salvo como: {filename}")
-    except Exception as e:
-        print(f"Erro ao salvar áudio: {e}")
-
-    return str(caminho_completo)

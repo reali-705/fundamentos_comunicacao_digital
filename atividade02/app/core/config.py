@@ -34,8 +34,8 @@ o padrão internacional da ITU (International Telecommunication Union).
 # ==========================================
 # Medidas em Hertz (Hz). Valores entre 600Hz e 800Hz são os mais confortáveis 
 # e tradicionais para radiotelegrafia.
-FREQUENCIA_PONTO = 700  # Frequência ligeiramente mais aguda para o ponto.
-FREQUENCIA_TRACO = 600  # Frequência ligeiramente mais grave para o traço, ajudando na distinção.
+FREQUENCIA_PONTO = 800  # Frequência ligeiramente mais aguda para o ponto.
+FREQUENCIA_TRACO = 800  # Frequência ligeiramente mais grave para o traço, ajudando na distinção.
 
 # ==========================================
 # 2. TEMPO E RITMO (Padrão Internacional)
@@ -63,3 +63,11 @@ AMPLITUDE = 0.5
 # Taxa de Amostragem (Sample Rate). Quantos "pontos" o computador desenha por segundo.
 # 44100 Hz é o padrão comercial de CDs, garantindo alta fidelidade sem arquivos gigantes.
 SAMPLE_RATE = 44100
+
+
+
+# ==========================================
+# 4. DETECÃO DE ÁUDIO (Configurações para o Receptor)
+# ==========================================
+
+FRAME_MS = int(DURACAO_PONTO * 1000/10)  # Duração de cada frame em milissegundos

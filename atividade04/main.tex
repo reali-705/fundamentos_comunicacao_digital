@@ -1,0 +1,26 @@
+\documentclass[12pt,a4paper]{article}
+
+% Puxa o arquivo de pacotes (setup.tex)
+\input{setup} 
+
+\begin{document}
+
+% Seu cabeçalho que usa as informações do metadata.tex
+\begin{center}
+    {\Large \textbf{\titulo} \par}
+    \vspace{0.4cm}
+    {\large \disciplina \par}
+    \vspace{0.6cm}
+    {\large \autores \par}
+    \vspace{0.2cm}
+    {\small \faculdade\ -- \universidade \par}
+    {\small \texttt{\emails} \par}
+    \divisoria
+\end{center}
+
+\vspace{0.5cm}
+
+% Puxa o conteúdo que está dentro da pasta subsections
+\input{subsections/atividade04}
+
+\end{document}

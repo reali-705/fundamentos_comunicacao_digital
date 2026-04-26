@@ -1,0 +1,85 @@
+% --- Metadados do trabalho ---
+\input{core/metadata}
+
+% --- Idioma, codificacao e fonte base ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{mathptmx}
+
+% --- Matematica e simbolos ---
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{siunitx}
+\sisetup{group-separator = {.}, output-decimal-marker = {,}}
+
+% --- Midia, graficos e codigo ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.5}
+
+% --- Layout e espacamento ---
+\usepackage[a4paper, top=3cm, bottom=2cm, left=3cm, right=2cm]{geometry}
+
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{10pt}{10pt}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+
+\usepackage{parskip}
+
+% --- Links e navegacao ---
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue]{hyperref}
+
+% --- Estilo do Código (Listings) ---
+\definecolor{codecomment}{rgb}{0.3, 0.3, 0.3}
+\definecolor{codekeyword}{rgb}{0.0, 0.0, 0.7} % Azul para keywords
+\definecolor{codestring}{rgb}{0.2, 0.2, 0.2} 
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    commentstyle=\itshape\color{codecomment},
+    keywordstyle=\bfseries\color{codekeyword},
+    stringstyle=\color{codestring},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=lines,
+    rulecolor=\color{black},
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={\%*}{*)},
+    inputencoding=utf8,
+    extendedchars=true,
+    % Suporte para acentuação no código
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ã}{{\~a}}1 {õ}{{\~o}}1 {ç}{{\c{c}}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ã}{{\~A}}1 {Õ}{{\~O}}1 {Ç}{{\c{C}}}1,
+    % Definição de palavras-chave para o seu Pseudocódigo
+    morekeywords={Procedimento, Variaveis, Inicio, Fim, Para, ate, faca, Retorne, Se, Entao, Senao, Absoluto, Seno, Exibir}
+}
+
+% --- Macros e personalizacoes gerais ---
+\newcommand{\divisoria}{\noindent\rule{\textwidth}{0.4pt}}
+\newcommand{\sinal}[1]{\mathcal{S}(#1)}
+\newcommand{\fourier}{\mathcal{F}}
+\newcommand{\hz}{\text{Hz}}
+\newcommand{\khz}{\text{kHz}}
+\newcommand{\mhz}{\text{MHz}}
+\newcommand{\ghz}{\text{GHz}}
+\newcommand{\db}{\text{dB}}
+\newcommand{\s}{\text{s}}
+\newcommand{\ms}{\text{ms}}
+\newcommand{\us}{\text{ }\mu\text{s}}
+\newcommand{\bps}{\text{bps}}
+\newcommand{\kbps}{\text{Kbps}}
+\newcommand{\mbps}{\text{Mbps}}

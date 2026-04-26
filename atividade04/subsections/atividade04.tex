@@ -1,0 +1,123 @@
+\section*{Objetivo}
+
+Demonstrar formalmente a \textbf{Série de Fourier} como ferramenta matemática para representação de funções periódicas, detalhando passo a passo a origem de seus coeficientes. Em seguida, propor uma implementação computacional via pseudocódigo que evidencie a convergência do resultado numérico ao valor teórico conforme aumentamos o número de harmônicos.
+
+\section*{Demonstração Teórica Passo a Passo}
+
+Para entender de onde vem a Série de Fourier, precisamos partir de uma premissa fundamental: vamos assumir que qualquer função periódica bem-comportada pode ser construída somando-se uma infinidade de ondas senoidais e cossenoidais simples.
+
+\subsection*{1. A Premissa (A Forma Geral)}
+
+Seja uma função periódica $f(t)$ com período $T$ e frequência fundamental $\omega_0 = \frac{2\pi}{T}$. Assumimos que ela pode ser expressa como:
+
+\begin{equation}
+f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} \left[ a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t) \right]
+\label{eq:fourier_series}
+\end{equation}
+
+Onde:
+\begin{itemize}
+    \item $\frac{a_0}{2}$ representa a constante (o nível médio ou deslocamento vertical da função).
+    \item $n \in \mathbb{N}$ é o índice do harmônico (múltiplos inteiros da frequência fundamental).
+    \item $a_n$ e $b_n$ são os "pesos" (amplitudes) de cada cosseno e seno, respectivamente.
+\end{itemize}
+
+Nosso objetivo agora é demonstrar como encontrar os valores exatos de $a_0$, $a_n$ e $b_n$.
+
+\subsection*{2. O Alicerce: O Princípio da Ortogonalidade}
+
+Para "isolar" os coeficientes, utilizaremos a propriedade de \textbf{ortogonalidade} das funções trigonométricas. No cálculo, dizemos que duas funções são ortogonais em um intervalo se a integral do produto delas nesse intervalo for zero. 
+
+Para um período completo $T$, valem as seguintes "regras de ouro":
+
+\textbf{Regra 1: A integral de um único seno ou cosseno sobre um período é zero.}
+\begin{equation}
+\int_0^T \cos(n\omega_0 t) \, dt = 0 \quad \text{e} \quad \int_0^T \sin(n\omega_0 t) \, dt = 0 \quad (\text{para } n \geq 1)
+\end{equation}
+
+\textbf{Regra 2: Funções de frequências diferentes ou tipos diferentes anulam-se no produto.}
+\begin{align}
+\int_0^T \cos(n\omega_0 t) \cos(m\omega_0 t) \, dt &= 0 \quad (\text{se } n \neq m) \\
+\int_0^T \sin(n\omega_0 t) \sin(m\omega_0 t) \, dt &= 0 \quad (\text{se } n \neq m) \\
+\int_0^T \cos(n\omega_0 t) \sin(m\omega_0 t) \, dt &= 0 \quad (\text{sempre, independentemente de } n \text{ e } m)
+\end{align}
+
+\textbf{Regra 3: Quando as funções são exatamente iguais ($n = m$), o resultado é a metade do período.}
+\begin{align}
+\int_0^T \cos^2(n\omega_0 t) \, dt &= \frac{T}{2} \\
+\int_0^T \sin^2(n\omega_0 t) \, dt &= \frac{T}{2}
+\end{align}
+
+\subsection*{3. Isolando o Coeficiente $a_0$ (O Valor Médio)}
+
+Para encontrar $a_0$, integramos ambos os lados da Equação (\ref{eq:fourier_series}) de $0$ a $T$. Pela \textbf{Regra 1}, todas as oscilações se anulam, restando apenas a componente constante:
+
+\begin{equation}
+\int_0^T f(t) \, dt = \frac{a_0}{2} \int_0^T 1 \, dt \implies \int_0^T f(t) \, dt = \frac{a_0}{2} \cdot T
+\end{equation}
+
+Isolando $a_0$, obtemos a fórmula da média:
+\begin{equation}
+\mathbf{a_0 = \frac{2}{T} \int_0^T f(t) \, dt}
+\end{equation}
+
+\subsection*{4. Isolando $a_n$ e $b_n$ (Amplitudes Harmônicas)}
+
+Para encontrar $a_n$, multiplicamos a série por $\cos(m\omega_0 t)$ e integramos. Pela ortogonalidade, apenas o termo onde os cossenos possuem a mesma frequência sobrevive (\textbf{Regra 3}):
+
+\begin{equation}
+\int_0^T f(t) \cos(n\omega_0 t) \, dt = a_n \int_0^T \cos^2(n\omega_0 t) \, dt = a_n \cdot \frac{T}{2}
+\end{equation}
+
+Analogamente para $b_n$, multiplicando por $\sin(n\omega_0 t)$:
+
+\begin{equation}
+\mathbf{a_n = \frac{2}{T} \int_0^T f(t) \cos(n\omega_0 t) \, dt} \quad \text{e} \quad \mathbf{b_n = \frac{2}{T} \int_0^T f(t) \sin(n\omega_0 t) \, dt}
+\end{equation}
+
+
+\subsection*{5. Algoritmo Principal: Aproximação de Fourier}
+
+A implementação computacional da Série de Fourier baseia-se na discretização das integrais de análise e na somatória finita para a síntese do sinal. O algoritmo abaixo divide-se em três etapas fundamentais: a definição do sinal de entrada $f(t)$, o cálculo numérico dos coeficientes através da regra dos retângulos para integração, e a reconstrução do sinal original pela superposição de componentes harmônicas. Esta abordagem universal permite processar qualquer função periódica, independente de sua complexidade analítica.
+
+\begin{lstlisting}[language={}, caption={Algoritmo de Analise e Sintese de Fourier}]
+Procedimento MinhaFuncao(t)
+    # Pode ser qualquer função periódica, por exemplo:
+    Retorne Seno(t) + 0.5 * Cosseno(2 * t)
+Fim Procedimento
+
+Procedimento CalcularCoeficientes(n, omega0, T)
+    Variaveis: dt, soma_a, soma_b, num_passos, t : Real
+    Inicio
+        soma_a <- 0.0
+        soma_b <- 0.0
+        num_passos <- 1000
+        dt <- T / num_passos
+        
+        Para i de 0 ate num_passos faca
+            t <- i * dt
+            soma_a <- soma_a + MinhaFuncao(t) * Cosseno(n * omega0 * t) * dt
+            soma_b <- soma_b + MinhaFuncao(t) * Seno(n * omega0 * t) * dt
+        Fim Para
+        
+        Retorne (2/T * soma_a, 2/T * soma_b)
+Fim Procedimento
+
+Procedimento ReconstruirSinal(t_alvo, max_harmonicos, T)
+    Variaveis: omega0, resultado, an, bn : Real
+    Inicio
+        omega0 <- 2 * 3.14159 / T
+        (a0, _) <- CalcularCoeficientes(0, omega0, T)
+        resultado <- a0 / 2
+        
+        Para n de 1 ate max_harmonicos faca
+            (an, bn) <- CalcularCoeficientes(n, omega0, T)
+            resultado <- resultado + an * Cosseno(n * omega0 * t_alvo) + bn * Seno(n * omega0 * t_alvo)
+        Fim Para
+        
+        Retorne resultado
+Fim Procedimento
+\end{lstlisting}
+
+\subsection*{6. Conclusão}
+A demonstração passo a passo ilustra como a ortogonalidade atua como um "filtro" algébrico perfeito. Ela permite encontrar componentes individuais de frequência escondidos dentro de um sinal no tempo. A implementação numérica via pseudocódigo comprova a validade deste modelo teórico, demonstrando que uma aproximação truncada com um número finito de harmônicos é capaz de produzir resultados com alta precisão para aplicações práticas.

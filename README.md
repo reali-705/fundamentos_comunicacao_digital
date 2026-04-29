@@ -17,6 +17,6 @@ Este repositório contém resoluções de exercícios e projetos relacionados à
 
 - [`atividade01/`](./atividade01): Resoluções de 12 questões sobre Sinais e Espectros, utilizando uma estrutura modular em LaTeX para facilitar a colaboração e manutenção do código-fonte.
 - [`atividade02/`](./atividade02): Projeto de tradutor de código morse com sistema de emissor e receptor.
-- [`atividade01/`](./atividade03) : Simulação dos gráficos dos slide 18 até o 21
--  [`atividade01/`](./atividade04) : Demonstração da série de fourier e pseudocódigo.
+- [`atividade03/`](./atividade03) : Simulação dos gráficos dos slide 18 até o 21
+-  [`atividade04/`](./atividade04) : Demonstração da série de fourier e pseudocódigo.
   
